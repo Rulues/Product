@@ -1,4 +1,4 @@
-name: build and test feature branch
+name: build and test develop branch
 on: 
   pull_request:
     branches: [ develop ]
@@ -16,7 +16,7 @@ jobs:
         ref: ${{ github.event.pull_request.head.sha }}
 
     - name: pull and checkout from git repository
-      run: |
+      run:
         echo "pulling and checking out from git repository"
 
     - name: setup java 17
@@ -24,12 +24,7 @@ jobs:
       with: 
         distribution: 'temurin' #see 'supported distributions' for availible options'
         java-version: '17'
-   # - run: java HelloWorldApp.java ejemplo ejecuacion
-    #- name: build with maven
-     # run: |
-      #  mvn clean install
-       # echo "build with maven"
-        
+      
     - name: Cache Maven dependencies
       uses: actions/cache@v2
       with: 
@@ -42,3 +37,41 @@ jobs:
       run: |
           mvn clean test package
           echo "build with maven"
+
+####################################################
+# Automatic merge 
+####################################################
+  merge-feature-into-develop:
+    runs-on: ubuntu-latest
+    needs: build-feature
+    if: ${{ success() }}
+    #para un job especifico se puede utilizar <job_id>.permissions para modificar los permisos del GITHUB_TOKEN
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      # descargar source code
+      # Solo un commit sera fetched por default,  for the ref/sha que sera lanzado en el workflow fetch_dept se definira en 0 para toda la history de todas las ramas
+      - uses: actions/checkout@v3
+        with:
+        #descarga el codigo desde la rama destino "develop" o rama.base
+          ref: ${{ github.base_ref }}
+          fetch-depth: 0
+        #Merge a develop
+      - name: Merge to development branch
+        if: ${{ success() }}
+        run: |
+          git config --global user.email "moonslave192@gmail.com" 
+          git config --global user.name "RbMoon"
+          #using -m "message" on merge command ins mandatori here in order to avoid open a text editor to write a commit message
+          #Usando -m "message" en el comando merge es obliugatorio para evitaer que se abra un editor de texto y se solicite que se envie un message
+          git merge --no-ff --verbose origin/${{ github.event.pull_request.head.ref }} -m "Merge pull request #${{ github.event.number }}" 
+      # Push Changes after merge
+
+      - name: Push changes after merge
+        if: ${{ success() }}
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: $ {{ Token_Actions }}
+          branch: ${{ github.base_ref }}
+   
