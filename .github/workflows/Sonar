@@ -1,5 +1,5 @@
 name: Sonar
-'on':
+on:
   push:
     branches:
       - feature/*
