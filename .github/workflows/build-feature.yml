@@ -1,0 +1,85 @@
+name: build and test develop branch
+on: 
+  pull_request:
+    branches: [ develop ]
+    types: [ opened, reopened ] 
+jobs: 
+  build-feature:
+    runs-on: ubuntu-latest
+    steps: 
+#########################################################################################################
+# 2. descarga el codigo de la rama feature, configura entorno de java y valida si el codigo es compilable  
+#########################################################################################################
+
+    - uses: actions/checkout@v3
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
+
+    - name: pull and checkout from git repository
+      run:
+        echo "pulling and checking out from git repository"
+
+    - name: setup java 17
+      uses: actions/setup-java@v3
+      with: 
+        distribution: 'temurin' #see 'supported distributions' for availible options'
+        java-version: '17'
+      
+    - name: Cache Maven dependencies
+      uses: actions/cache@v2
+      with: 
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: 
+          ${{ runner.os }}-maven- 
+
+    - name: build with maven
+      run: |
+          mvn clean test package
+          echo "build with maven"
+
+####################################################
+# Automatic merge 
+####################################################
+  merge-feature-into-develop:
+    runs-on: ubuntu-latest
+    needs: build-feature
+    if: ${{ success() }}
+    #para un job especifico se puede utilizar <job_id>.permissions para modificar los permisos del GITHUB_TOKEN
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      # descargar source code
+      # Solo un commit sera fetched por default,  for the ref/sha que sera lanzado en el workflow fetch_dept se definira en 0 para toda la history de todas las ramas
+      - uses: actions/checkout@v3
+        with:
+        #descarga el codigo desde la rama destino "develop" o rama.base
+          ref: ${{ github.base_ref }}
+          fetch-depth: 0
+        #Merge a develop
+      - name: Merge to development branch
+        if: ${{ success() }}
+        run: |
+          git config --global user.email "moonslave192@gmail.com" 
+          git config --global user.name "RbMoon"
+          #using -m "message" on merge command ins mandatori here in order to avoid open a text editor to write a commit message
+          #Usando -m "message" en el comando merge es obliugatorio para evitaer que se abra un editor de texto y se solicite que se envie un message
+          git merge --no-ff --verbose origin/${{ github.event.pull_request.head.ref }} -m "Merge pull request #${{ github.event.number }}" 
+      # Push Changes after merge
+
+      - name: Push changes after merge
+        if: ${{ success() }}
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: $ {{ Token_Actions }}
+          branch: ${{ github.base_ref }}
+      # llama al workflow publish-jar
+      - name: trigger deploy artifact
+        if: success()
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          event-type: publish-artifact-event
+          client-payload: '{ "base_branch": "${{ github.base_ref }}"}'
