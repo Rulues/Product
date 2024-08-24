@@ -40,4 +40,5 @@ jobs:
         with:
           scanMetadataReportFile: target
       - name: "SonarQube Quality Gate Status value"
-        run: echo "The Quality Gate status is ${{ steps.sonarqube-quality-gate-check.outputs.quality-gate-status }}"
+        run: |
+          echo "The Quality Gate status is ${{ steps.sonarqube-quality-gate-check.outputs.quality-gate-status }}"
