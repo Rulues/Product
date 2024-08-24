@@ -27,7 +27,7 @@ jobs:
           path: ~/.m2
           key: '${{ runner.os }}-m2-${{ hashFiles(''**/pom.xml'') }}'
           restore-keys: '${{ runner.os }}-m2'
-      - name: Build and analyze
+      - name: SonarQube Scan
         env:
           SONAR_TOKEN: '${{ secrets.SONAR_TOKEN }}'
           SONAR_HOST_URL: '${{ secrets.SONAR_HOST_URL }}'
@@ -36,9 +36,12 @@ jobs:
           -Dsonar.projectKey=producto-service
           -Dsonar.projectName='producto-service'
       - name: SonarQube Quality Gate check
-        uses: sonarsorce/sonarqube-quality-gate-action@master
-        with:
-          scanMetadataReportFile: target
-      - name: "SonarQube Quality Gate Status value"
-        run: |
-          echo "The Quality Gate status is ${{ steps.sonarqube-quality-gate-check.outputs.quality-gate-status }}"
+        # Force to fail step after specific time.
+        timeout-minutes: 5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }} #OPTIONAL
+      # Optionally you can use the output from the Quality Gate in another step.
+      # The possible outputs of the `quality-gate-status` variable are `PASSED`, `WARN` or `FAILED`.
+      - name: SonarQube Quality Gate Status 
+        run: echo "The Quality Gate status is ${{ steps.sonarqube-quality-gate-check.outputs.quality-gate-status }}"
