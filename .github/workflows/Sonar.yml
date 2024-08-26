@@ -1,8 +1,14 @@
 name: Sonar
 on:
+<<<<<<< HEAD
   #push:
    # branches:
     #  - feature/*
+=======
+ # push:
+  #  branches:
+   #   - feature/*
+>>>>>>> fd2aedc7a3a4856080800cf3842eb3afac63ef9a
   repository_dispatch:
     types: [sonar-scan-event] 
 jobs:
