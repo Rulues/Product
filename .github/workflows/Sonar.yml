@@ -1,8 +1,10 @@
 name: Sonar
 on:
-  push:
-    branches:
-      - feature/*
+ # push:
+  #  branches:
+   #   - feature/*
+  repository_dispatch:
+    types: [sonar-scan-event] 
 jobs:
   build:
     name: Build and analyze SonarQube
