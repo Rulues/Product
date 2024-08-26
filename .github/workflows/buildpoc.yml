@@ -58,7 +58,6 @@ jobs:
           fetch-depth: 0
         
         #Merge a develop
-
       - name: Merge to development branch
         if: ${{ success() }}
         run: |
@@ -69,7 +68,6 @@ jobs:
           git merge --no-ff --verbose origin/${{ github.event.pull_request.head.ref }} -m "Merge pull request #${{ github.event.number }}" 
       
       # Push Changes after merge
-
       - name: Push changes after merge
         if: ${{ success() }}
         uses: ad-m/github-push-action@master
@@ -78,13 +76,52 @@ jobs:
           branch: ${{ github.base_ref }}
 
     # llama analisis Sonar
-      - name: trigger Sonar Analisis
-        if: success()
+
+
+  build-scan-sonarqube:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          repository: ${{ github.repository }}
-          event-type: sonar-scan-event
-          client-payload: '{ "base_branch": "${{ github.base_ref}}" }'
+          fetch-depth: 0
+      - name: Set up JDK 17
+        uses: actions/setup-java@v1
+        with:
+          java-version: 17
+      - name: Cache SonarQube packages
+        uses: actions/cache@v1
+        with:
+          path: ~/.sonar/cache
+          key: '${{ runner.os }}-sonar'
+          restore-keys: '${{ runner.os }}-sonar'
+      - name: Cache Maven packages
+        uses: actions/cache@v1
+        with:
+          path: ~/.m2
+          key: '${{ runner.os }}-m2-${{ hashFiles(''**/pom.xml'') }}'
+          restore-keys: '${{ runner.os }}-m2'
+      - name: SonarQube Scan
+        env:
+          SONAR_TOKEN: '${{ secrets.SONAR_TOKEN }}'
+          SONAR_HOST_URL: '${{ secrets.SONAR_HOST_URL }}'
+        run: >-
+          mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
+          -Dsonar.projectKey=producto-service
+          -Dsonar.projectName='producto-service'
+      - name: SonarQube Quality Gate check
+        id: sonarqube-quality-gate-check
+        uses: sonarsource/sonarqube-quality-gate-action@develop
+        # Force to fail step after specific time.
+        timeout-minutes: 5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }} #OPTIONAL
+      # Optionally you can use the output from the Quality Gate in another step.
+      # The possible outputs of the `quality-gate-status` variable are `PASSED`, `WARN` or `FAILED`.
+      - name: SonarQube Quality Gate Status 
+        run: |
+          echo "The Quality Gate status is ${{ steps.sonarqube-quality-gate-check.outputs.quality-gate-status }}"
+
 
    # llama publish jar
 
