@@ -110,7 +110,7 @@ jobs:
           -Dsonar.projectName='producto-service'
       - name: SonarQube Quality Gate check
         id: sonarqube-quality-gate-check
-        uses: sonarsource/sonarqube-quality-gate-action@develop
+        uses: sonarsource/sonarqube-quality-gate-action@master
         # Force to fail step after specific time.
         timeout-minutes: 5
         env:
