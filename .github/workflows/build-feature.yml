@@ -62,19 +62,28 @@ jobs:
         if: ${{ success() }}
         run: |
           git config --global user.email "moonslave192@gmail.com" 
-          git config --global user.name "RbMoon"
+          git config --global user.name "Rb Moon"
           #using -m "message" on merge command ins mandatori here in order to avoid open a text editor to write a commit message
           #Usando -m "message" en el comando merge es obliugatorio para evitaer que se abra un editor de texto y se solicite que se envie un message
-          git merge --no-ff --verbose origin/${{ github.event.pull_request.head.ref }} -m "Merge pull request #${{ github.event.number }}" 
+        #  git merge --no-ff --verbose origin/${{ github.event.pull_request.head.ref }} -m "Merge pull request #${{ github.event.number }}" 
       # Push Changes after merge
 
-      - name: Push changes after merge
-        if: ${{ success() }}
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: $ {{ Token_Actions }}
-          branch: ${{ github.base_ref }}
+      #- name: Push changes after merge
+      #  if: ${{ success() }}
+      #  uses: ad-m/github-push-action@master
+      #  with:
+      #    github_token: $ {{ secrets.GITHUB_TOKEN }}
+      #    branch: ${{ github.base_ref }}
       # llama al workflow publish-jar
+
+      - name: trigger Sonar Analisis
+        if: success()
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ github.repository }}
+          event-type: sonar-scan-event
+          client-payload: '{ "base_branch": "${{ github.base_ref}}" }'
+
       - name: trigger deploy artifact
         if: success()
         uses: peter-evans/repository-dispatch@v2
@@ -82,4 +91,4 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
           event-type: publish-artifact-event
-          client-payload: '{ "base_branch": "${{ github.base_ref }}"}'
+          client-payload: '{ "base_branch": "${{ github.base_ref }}" }'
