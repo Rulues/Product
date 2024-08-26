@@ -118,9 +118,11 @@ jobs:
       - name: SonarQube Quality Gate check
         id: sonarqube-quality-gate-check
         uses: sonarsource/sonarqube-quality-gate-action@master
+        with:
+          scanMetadataReportFile: target/sonar/report-task.txt
       #uses: opsverseio/sonarqube-quality-gate-action@v2.3.0
        # Force to fail step after specific time.
-        timeout-minutes: 5
+        timeout-minutes: 1
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }} #OPTIONAL
@@ -134,11 +136,11 @@ jobs:
 
    # llama publish jar
 
-      - name: trigger deploy artifact
-        if: success()
-        uses: peter-evans/repository-dispatch@v2
-        with:
-            token: ${{ secrets.GITHUB_TOKEN }}
-            repository: ${{ github.repository }}
-            event-type: publish-artifact-event
-            client-payload: '{ "base_branch": "${{ github.base_ref }}" }'
+     # - name: trigger deploy artifact
+     #   if: success()
+     #   uses: peter-evans/repository-dispatch@v2
+     #   with:
+     #       token: ${{ secrets.GITHUB_TOKEN }}
+     #       repository: ${{ github.repository }}
+     #       event-type: publish-artifact-event
+     #       client-payload: '{ "base_branch": "${{ github.base_ref }}" }'
