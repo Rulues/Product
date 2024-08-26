@@ -44,12 +44,13 @@ jobs:
       if: success()
       uses: peter-evans/repository-dispatch@v2
       with:
-        token: ${{ github.repository }}
+        token: ${{ secrets.GITHUB_TOKEN }}
+        repository: ${{ github.repository }}
         event-type: sonar-scan-event
         client-payload: '{ "base_branch": "${{ github.base_ref}}" }'
 
    # llama publish jar
-   
+
     - name: trigger deploy artifact
       if: success()
       uses: peter-evans/repository-dispatch@v2
