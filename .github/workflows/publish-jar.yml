@@ -7,7 +7,7 @@ jobs:
   download-artifact-job:
     runs-on: ubuntu-latest
     env:
-      ARTIFACT_NAME: 'rle_quartz-0.0.1-SNAPSHOT.jar'
+      ARTIFACT_NAME: 'product-microservice-0.0.1-SNAPSHOT.jar'
     permissions: 
       contents: write
       pull-requests: write 
