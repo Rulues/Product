@@ -34,7 +34,8 @@ jobs:
       - name: checksum of download artifact  
         if: success()
         id: hash
-        run: echo "HASH=$(shasum /tmp/artifactjar/${{ github.event.client_payload.artifact_name }} | awk '{ print $1 }')" >> $GITHUB_ENV
+        run: |
+             echo "HASH=$(shasum /tmp/artifactjar/${{ github.event.client_payload.artifact_name }} | awk '{ print $1 }')" >> $GITHUB_ENV
              echo env.HASH
              echo $GITHUB_ENV
 
