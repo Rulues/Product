@@ -55,7 +55,7 @@ jobs:
           ls -la 
           echo preparing docker build context 
           cp .Docker/Dockerfile /tmp/Dockerfile
-          cp /tmp/artifactjar/${{ github.event.client_payload.artifact_name }} /tmp/$ {{ github.event.client_payload.artifact_name }}
+          cp /tmp/artifactjar/${{ github.event.client_payload.artifact_name }} /tmp/${{ github.event.client_payload.artifact_name }}
           ls -la /tmp
 
       - name: upload artifact 
