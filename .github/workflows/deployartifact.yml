@@ -22,7 +22,7 @@ jobs:
       - uses: dawidd6/action-download-artifact@v2
         id: download-artifact
         with: 
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.TOKEN }}
           workflow: publish-jar.yml
           workflow_conclusion: success
           name: artifactjar
@@ -94,7 +94,7 @@ jobs:
       with :
         registry: ghcr.io
         username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+        password: ${{ secrets.TOKEN }}
 
     #4.- Descarga artifact
     - name:  Download artifact
