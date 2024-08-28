@@ -3,7 +3,7 @@ on:
   repository_dispatch:
     types: [deploy-artifact-event]
 jobs:
-  download-artifact-job:
+  dowload-artifact-job:
     runs-on: ubuntu-latest
     permissions:
       contents: read
