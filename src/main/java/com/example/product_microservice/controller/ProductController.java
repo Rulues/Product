@@ -3,7 +3,9 @@ package com.example.product_microservice.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,6 +22,15 @@ public class ProductController {
 	@Autowired 
 	private ProductRepository productRepository;
 	
+	@Value("${db.password}")
+	private String password;
+
+	@GetMapping("/testproperty")
+	public ResponseEntity<String> getTestValues(){
+		return new ResponseEntity<>(password, HttpStatus.OK);
+	}
+
+
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
 	public List<ProductEntity> getAllProducts(){
@@ -32,4 +43,6 @@ public class ProductController {
 		productRepository.save(productEntity);
 		
 	}
+
+
 }

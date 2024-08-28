@@ -11,18 +11,12 @@ VOLUME /tmp
 ARG JAR_FILE
 ARG ARG DB_PASSWORD
 COPY $(JAR_FILE) /tmp/app.jar
-
 ENV DB_PASSWORD=$DB_PASSWORD
-
 #Cambia el propietario de directorio /app para que use el admin
 RUN chown -R admin:deveopsc /tmp
-
 # Indicamos que de aqui en adelante se usara este usuario para ejecutar 
 USER admin
-
-
 # Expone el puerto en el que la aplicación Spring Boot se ejecutará
 EXPOSE 8080
-
 # Define el comando para ejecutar la aplicación
 ENTRYPOINT ["java", "-jar", "/app.jar"]
