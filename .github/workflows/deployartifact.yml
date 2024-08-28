@@ -17,7 +17,7 @@ jobs:
       - name: Retrieve Payload
         run: |
           echo ${{ github.event.client_payload.checksum }}
-      - uses: davidd6/action-download-artifact@v2
+        uses: davidd6/action-download-artifact@v2
         id: download-artifact
         with: 
           github_token: ${{ secrets.GITHUB_TOKEN }}
