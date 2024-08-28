@@ -58,7 +58,7 @@ jobs:
         path: ${{ github.workspace }}/target/${{ env.ARTIFACT_NAME }}
 
 # Llama checksum of artifact
-    - name: Verify (sha1sum
+    - name: Verify SHA1sum
       if: success()
       id: cal_cheksum_jar
       run: |
@@ -75,4 +75,4 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         repository: ${{ github.repository }}
         event-type: deploy-artifact-event 
-        client-payload: ${{ fromJSON(evn.JSON_PAYLOAD) }}
+        client-payload: ${{fromJSON(evn.JSON_PAYLOAD) }}

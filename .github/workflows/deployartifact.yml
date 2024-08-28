@@ -67,17 +67,17 @@ jobs:
             /tmp/${{ github.event.client_payload.artefact_name }}
 
 ###################################################
-#Job para administrar las tareas de docker
+#Job 2 para administrar las tareas de docker
 ###################################################
   docker_job:
     needs:
       - download-artifact-job 
 
     runs-on: ubuntu-latest
-    permissions:
-      contents: read 
-      actions: read
-      packages: write 
+   # permissions:
+    #  contents: read 
+     # actions: read
+      #packages: write 
     steps:
 
     #1.-  Instaran el emulador QEMU
@@ -114,12 +114,11 @@ jobs:
         context:  ./docketBuildContext # Ubicacion donde se almacenan los archivos dockerfile y artifact
         file : ./dockerBuildContext/Dockerfile #Ubicacion del dockerfile
         # parametros requeridos por el dockerfile
-        build-args:  
-          JAR_FILE=${{ github.event.client_payload.artefact_name }}
+        build-args:  |
+          JAR_FILE=./dockerBuildContext/${{ github.event.client_payload.artefact_name }} 
           DB_PASSWORD=${{ secrets.DB_PASSWORD }}
         push: true # Sube la imagen al registry, se encuentra en false por Default
-        tags: ghcr.io/${{ github.repository_owner }}/product:${{ github.sha }} #nombre completo de la imagen, incluye el repositorio, usuario, nombre de la imagen y tag
-# ARTIFAC_NAME_PATH=./dockerBuildContext/${{ github.event.client_payload.artefact_name }} 
+        tags: ghcr.io/${{ github.repository_owner}}/product:${{ github.sha }} #nombre completo de la imagen, incluye el repositorio, usuario, nombre de la imagen y tag
 
 
 
