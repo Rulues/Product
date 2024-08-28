@@ -34,16 +34,16 @@ jobs:
       - name: checksum of download artifact  
         if: success()
         id: hash
-        run: echo "HASH=$(sha1sum /tmp/artifactjar/${{ github.event.client_payload.artefact_name }} | awk '{ print $1 }')" >> $GITHUB_ENV
+        run: echo "HASH=$(sha1sum /tmp/artifactjar/${{ github.event.client_payload.artifact_name }} | awk '{ print $1 }')" >> $GITHUB_ENV
 
-     # - name: compare checksum
-     #   run: |
-     #     if [ "${{ env.HASH }}" == "${{ github.event.client_payload.checksum }}" ]; then 
-     #         echo "The checksum are equals! successfully operations"
-     #     else
-     #         echo "The cheksum are NOT equals! failure operation."
-     #         exit 1;
-     #     fi
+      - name: compare checksum
+        run: |
+          if [ "${{ env.HASH }}" == "${{ github.event.client_payload.checksum }}" ]; then 
+              echo "The checksum are equals! successfully operations"
+          else
+              echo "The cheksum are NOT equals! failure operation."
+              exit 1;
+          fi
 
 # Descarga source code de la rama default para poder devolver Dockerfile y cargar la imagen ak cibtexti 
 
@@ -54,7 +54,7 @@ jobs:
           echo print the current directory show files
           ls -la 
           echo preparing docker build context 
-          cp .Docker/Dockerfile /tmp/Dockerfile
+          cp .docker/Dockerfile /tmp/Dockerfile
           cp /tmp/artifactjar/${{ github.event.client_payload.artifact_name }} /tmp/${{ github.event.client_payload.artifact_name }}
           ls -la /tmp
 
