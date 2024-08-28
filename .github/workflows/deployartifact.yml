@@ -2,8 +2,6 @@ name: Deploy artifact
 on:
   repository_dispatch:
     types: [deploy-artifact-event]
-
-
 jobs:
   download-artifact-job:
     runs-on: ubuntu-latest
@@ -11,20 +9,25 @@ jobs:
       contents: read
       actions: read
     steps:
+
 # Devuelve parametros desde payload y descarga el artefacto
+
+
       - run: echo ${{ github.event.client_payload.checksum }}
 
       - name: Retrieve Payload
         run: |
           echo ${{ github.event.client_payload.checksum }}
-        uses: davidd6/action-download-artifact@v2
+
+      - uses: dawidd6/action-download-artifact@v2
         id: download-artifact
         with: 
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          workflow: publis-jar.yml
+          workflow: publish-jar.yml
           workflow_conclusion: success
           name: artifactjar
           path: /tmp/artifactjar
+
       - name: Display structure of downloaded hashFiles
         run: ls -R /tmp/artifactjar 
 
@@ -41,7 +44,9 @@ jobs:
               echo "The cheksum are NOT equals! failure operation."
               exit 1;
           fi
+
 # Descarga source code de la rama default para poder devolver Dockerfile y cargar la imagen ak cibtexti 
+
 
       - uses: actions/checkout@v3
         if: success()
@@ -52,6 +57,7 @@ jobs:
           cp .docker/Dockerfile
           cp /tmp/artifactjar/${{ github.event.client_payload.artefact_name }} /tmp/$ {{ github.event.client_payload.artefact_name }}
           ls -la /tmp
+
       - name: upload artifact 
         uses: actions/upload-artifact@v3
         with:
@@ -66,7 +72,12 @@ jobs:
   docker_job:
     needs:
       - download-artifact-job 
+
     runs-on: ubuntu-latest
+    permissions:
+      contents: read 
+      actions: read
+      packages: write 
     steps:
 
     #1.-  Instaran el emulador QEMU
@@ -81,30 +92,34 @@ jobs:
     - name : Login to Docker Hub
       uses : docker/login-action@v2
       with :
-        registry: gcr.io
+        registry: ghcr.io
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
     #4.- Descarga artifact
     - name:  Download artifact
-      uses:  actions/download-artifact@v2
+      uses:  actions/download-artifact@v3
       with: 
         name: DockerBuildContext
         path: ./dockerBuildContext 
     
     #5.- Muestra la estructura
+    - name: Display structure of downloaded  files
+      run: ls -R dockerBuildContext
+
+     #6.- Muestra la estructura 
     - name: Build and push image using action
       uses: docker/build-push-action@v4
       with: 
         context:  ./docketBuildContext # Ubicacion donde se almacenan los archivos dockerfile y artifact
         file : ./dockerBuildContext/Dockerfile #Ubicacion del dockerfile
         # parametros requeridos por el dockerfile
-        build-args:  |
-          ARTIFAC_NAME_PATH=./dockerBuildContext/${{ github.event.client_payload.artefact_name }} 
+        build-args:  
+          JAR_FILE=${{ github.event.client_payload.artefact_name }}
           DB_PASSWORD=${{ secrets.DB_PASSWORD }}
         push: true # Sube la imagen al registry, se encuentra en false por Default
         tags: ghcr.io/${{ github.repository_owner }}/product:${{ github.sha }} #nombre completo de la imagen, incluye el repositorio, usuario, nombre de la imagen y tag
-
+# ARTIFAC_NAME_PATH=./dockerBuildContext/${{ github.event.client_payload.artefact_name }} 
 
 
 
