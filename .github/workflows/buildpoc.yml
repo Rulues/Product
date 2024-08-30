@@ -61,8 +61,10 @@ jobs:
       - name: Merge to development branch
         if: ${{ success() }}
         run: |
-          git config --global user.email "moonslave192@gmail.com" 
-          git config --global user.name "Rubi Luna"
+          echo ${{ github.event.pull_request.head.ref }} 
+          echo ${{ github.event.number }}
+          git config --global user.email "ectinev@hotmail.com" 
+          git config --global user.name "rulues"
           #using -m "message" on merge command ins mandatori here in order to avoid open a text editor to write a commit message
           #Usando -m "message" en el comando merge es obliugatorio para evitaer que se abra un editor de texto y se solicite que se envie un message
           git merge --no-ff --verbose origin/${{ github.event.pull_request.head.ref }} -m "Merge pull request #${{ github.event.number }}"
