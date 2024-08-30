@@ -20,4 +20,5 @@ public class ProductEntity {
 	private Double unitPrice;
 	private Boolean refurbished;
 	private String color;
+	private Double size;
 }
