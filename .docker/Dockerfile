@@ -10,7 +10,7 @@ VOLUME /tmp
 # Copiamos el jar a la imagen
 ARG JAR_FILE
 ARG ARG DB_PASSWORD
-COPY $(JAR_FILE) /tmp/app.jar
+COPY $JAR_FILE /tmp/app.jar
 ENV DB_PASSWORD=$DB_PASSWORD
 #Cambia el propietario de directorio /app para que use el admin
 RUN chown -R admin:deveopsc /tmp
