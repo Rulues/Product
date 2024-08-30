@@ -18,7 +18,7 @@ jobs:
         echo ${{ github.event.client_payload.base_branch }} 
     # Descargar codigo desde la rama default para llevarla a Dockerfile y crear una imagen dockerizada
 
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         ref: ${{ github.event.client_payload.base_branch }}
         fetch-depth: 0
@@ -29,17 +29,19 @@ jobs:
 
     # Configuracion de Java y validacion de que el codigo es compilable
     - name: setup java 17
-      uses: actions/setup-java@v3
+      uses: actions/setup-java@v4
       with: 
         distribution: 'temurin'
         java-version: '17'
+
     - name: Cache local Maven repository   
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ~/.m2/repository
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
         restore-keys: |
           s{{ runner.os }}-maven-
+          
     - name: build with maven
     # SNAPSHOT hace referencia a la creacion de un copia de tu codigo en un tiempo determinado 
     # -- batch-mode no habra interaccion de usuario
@@ -52,7 +54,7 @@ jobs:
 # Publica el artefacto  generado
     - name: Publish package
       if: success()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with: 
         name: artifactjar
         path: ${{ github.workspace }}/target/${{ env.ARTIFACT_NAME }}
@@ -64,8 +66,9 @@ jobs:
       run: |
         ls -la ${{ github.workspace }}/target/
         SHA1=$(sha1sum ${{ github.workspace }}/target/$ARTIFACT_NAME | awk '{ print $1}')
-        JSON=\''{"message": "publish artifact","artifact_name":"'"$ARTIFAC_NAME"'","checksum": "'"$SHA1"'"}'\'
+        JSON=\''{"message": "publish artifact","artifact_name":"'"$ARTIFACT_NAME"'","checksum": "'"$SHA1"'"}'\'
         echo JSON_PAYLOAD=$(printf '%s\n' "$JSON") >> $GITHUB_ENV
+        echo $SHA1
 
 #llama a deploy artefact
     - name: trigger deploy artifact 

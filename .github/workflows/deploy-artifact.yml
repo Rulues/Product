@@ -20,8 +20,11 @@ jobs:
           echo ${{ github.event.client_payload.checksum }}
           echo ${{ github.event.client_payload.artifact_name }}
           echo ${{ github.repository_owner}}
+          echo ${{ github.event.client_payload.artefact_name }}
 
-      - uses: dawidd6/action-download-artifact@v2
+# Descarga elemento generado por otro workflow
+
+      - uses: dawidd6/action-download-artifact@v3
         id: download-artifact
         with: 
           github_token: ${{ secrets.TOKEN }}
@@ -29,16 +32,18 @@ jobs:
           workflow_conclusion: success
           name: artifactjar
           path: /tmp/artifactjar
-    #lista directorio
+
+    #lista directorio temporal asegurarnos que si se ejecuto la descarga 
       - name: Display structure of downloaded files
         run: ls -R /tmp/artifactjar 
+
 
      # - name: checksum of download artifact  
      #   if: success()
      #   id: hash
      #   run:  echo "HASH=$(sha1sum /tmp/artifactjar/${{ github.event.client_payload.artifact_name }} | awk '{ print $1 }')" >> $GITHUB_ENV
-     #       echo github.event.client_payload.artifact_name 
-             #echo ${{ github.event.client_payload.artifact_name }}
+             #echo github.event.client_payload.artifact_name 
+             
              #echo "HASH=$(sha1sum /tmp/artifactjar/${{ github.event.client_payload.artifact_name }} | awk '{ print $1 }')" >> $GITHUB_ENV
              #echo $HASH
              #echo $GITHUB_ENV
