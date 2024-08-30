@@ -120,7 +120,7 @@ jobs:
 
      #6.- Muestra la estructura 
     - name: Build and push image using action
-      uses: docker/build-push-action@v6
+      uses: docker/build-push-action@v4
       with: 
         context:  ./dockerBuildContext # Ubicacion donde se almacenan los archivos dockerfile y artifact
         file : ./dockerBuildContext/Dockerfile #Ubicacion del dockerfile
