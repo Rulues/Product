@@ -21,6 +21,7 @@ jobs:
           echo ${{ github.event.client_payload.artifact_name }}
           echo ${{ github.repository_owner}}
           echo ${{ github.event.client_payload.artefact_name }}
+           
 
 # Descarga elemento generado por otro workflow
 
@@ -38,11 +39,15 @@ jobs:
         run: ls -R /tmp/artifactjar 
 
 
-     # - name: checksum of download artifact  
-     #   if: success()
-     #   id: hash
-     #   run:  echo "HASH=$(sha1sum /tmp/artifactjar/${{ github.event.client_payload.artifact_name }} | awk '{ print $1 }')" >> $GITHUB_ENV
-             #echo github.event.client_payload.artifact_name 
+      - name: checksum of download artifact  
+        if: success()
+        id: hash
+        run:  |
+              echo ${{ github.event.client_payload.artifact_name }}
+              echo ${{ github.repository_owner}}
+              echo ${{ github.event.client_payload.artefact_name }}
+              echo "HASH=$(sha1sum /tmp/artifactjar/${{ github.event.client_payload.artifact_name }} | awk '{ print $1 }')" >> $GITHUB_ENV
+
              
              #echo "HASH=$(sha1sum /tmp/artifactjar/${{ github.event.client_payload.artifact_name }} | awk '{ print $1 }')" >> $GITHUB_ENV
              #echo $HASH
@@ -67,7 +72,7 @@ jobs:
           ls -la 
           echo preparing docker build context 
           cp .docker/Dockerfile /tmp/Dockerfile
-          cp /tmp/artifactjar/${{ github.event.client_payload.artefact_name }} /tmp/${{ github.event.client_payload.artefact_name }}
+          cp /tmp/artifactjar/${{ github.event.client_payload.artifact_name }} /tmp/${{ github.event.client_payload.artifact_name }}
           ls -la /tmp
 
       - name: upload artifact 
