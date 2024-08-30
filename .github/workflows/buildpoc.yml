@@ -22,7 +22,7 @@ jobs:
     - name: setup java 17
       uses: actions/setup-java@v3
       with: 
-        distribution: 'openjdk:17-jdk-slim' #see 'supported distributions' for availible options'
+        distribution: 'temurin' #see 'supported distributions' for availible options'
         java-version: '17'
       
     - name: Cache Maven dependencies
