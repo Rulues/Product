@@ -59,7 +59,7 @@ jobs:
 # Descarga source code de la rama default para poder devolver Dockerfile y cargar la imagen ak cibtexti 
 
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         if: success()
       - run: |
           echo print the current directory show files
@@ -70,7 +70,7 @@ jobs:
           ls -la /tmp
 
       - name: upload artifact 
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: dockerBuildContext
           path: |
@@ -93,7 +93,7 @@ jobs:
 
     #1.-  Instaran el emulador QEMU
     - name : Set up QEMU
-      uses : docker/setup-qemu-action@v2
+      uses : docker/setup-qemu-action@v3
 
     #2.-  instalr docker buildx
     - name : Set up Docker Buildx 
@@ -109,7 +109,7 @@ jobs:
 
     #4.- Descarga artifact
     - name:  Download artifact
-      uses:  actions/download-artifact@v3
+      uses:  actions/download-artifact@v4
       with: 
         name: dockerBuildContext
         path: ./dockerBuildContext 
@@ -120,7 +120,7 @@ jobs:
 
      #6.- Muestra la estructura 
     - name: Build and push image using action
-      uses: docker/build-push-action@v4
+      uses: docker/build-push-action@v6
       with: 
         context:  ./dockerBuildContext # Ubicacion donde se almacenan los archivos dockerfile y artifact
         file : ./dockerBuildContext/Dockerfile #Ubicacion del dockerfile
