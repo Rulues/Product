@@ -31,7 +31,7 @@ jobs:
     - name: setup java 17
       uses: actions/setup-java@v4
       with: 
-        distribution: 'temurin'
+        distribution: 'openjdk:17-jdk-slim'
         java-version: '17'
 
     - name: Cache local Maven repository   
@@ -41,7 +41,7 @@ jobs:
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
         restore-keys: |
           s{{ runner.os }}-maven-
-          
+
     - name: build with maven
     # SNAPSHOT hace referencia a la creacion de un copia de tu codigo en un tiempo determinado 
     # -- batch-mode no habra interaccion de usuario
@@ -73,7 +73,7 @@ jobs:
 #llama a deploy artefact
     - name: trigger deploy artifact 
       if: success()
-      uses: peter-evans/repository-dispatch@v2
+      uses: peter-evans/repository-dispatch@v3
       with:
         token: ${{ secrets.TOKEN }}
         repository: ${{ github.repository }}
