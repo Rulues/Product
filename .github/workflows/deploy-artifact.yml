@@ -38,17 +38,14 @@ jobs:
       - name: Display structure of downloaded files
         run: ls -R /tmp/artifactjar 
 
-
       - name: checksum of download artifact  
         if: success()
         id: hash
         run:  |
+              echo ${{ github.sha }}
+              echo ${{ github.repository_owner}}
               echo "HASH=$(sha1sum /tmp/artifactjar/${{ github.event.client_payload.artifact_name }} | awk '{ print $1 }')" >> $GITHUB_ENV
 
-             
-             #echo "HASH=$(sha1sum /tmp/artifactjar/${{ github.event.client_payload.artifact_name }} | awk '{ print $1 }')" >> $GITHUB_ENV
-             #echo $HASH
-             #echo $GITHUB_ENV
     # Seguridad valida archivos no esten corruptos o dañados
       - name: compare checksum
         run: |
@@ -123,7 +120,7 @@ jobs:
 
      #6.- Muestra la estructura 
     - name: Build and push image using action
-      uses: docker/build-push-action@v4
+      uses: docker/build-push-action@v6
       with: 
         context:  ./dockerBuildContext # Ubicacion donde se almacenan los archivos dockerfile y artifact
         file : ./dockerBuildContext/Dockerfile #Ubicacion del dockerfile
