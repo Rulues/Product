@@ -107,6 +107,7 @@ jobs:
         registry: ghcr.io
         username: ${{ github.actor }}
         password: ${{ secrets.TOKEN }}
+        logout: false
 
     #4.- Descarga artifact
     - name:  Download artifact
@@ -131,6 +132,3 @@ jobs:
           DB_PASSWORD=${{ secrets.DB_PASSWORD }}
         push: true # Sube la imagen al registry, se encuentra en false por Default
         tags: ghcr.io/${{ github.repository_owner}}/product:${{ github.sha }} #nombre completo de la imagen, incluye el repositorio, usuario, nombre de la imagen y tag
-
-
-
