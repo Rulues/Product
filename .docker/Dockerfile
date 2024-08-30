@@ -20,8 +20,5 @@ RUN chown -R admin:devopsc /tmp
 # Indicamos que de aqui en adelante se usara este usuario para ejecutar 
 USER admin
 
-# Expone el puerto en el que la aplicación Spring Boot se ejecutará
-EXPOSE 8080
-
 # Define el comando para ejecutar la aplicación
 ENTRYPOINT ["java", "-jar", "/tmp/app.jar"]
