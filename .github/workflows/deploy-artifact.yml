@@ -43,9 +43,6 @@ jobs:
         if: success()
         id: hash
         run:  |
-              echo ${{ github.event.client_payload.artifact_name }}
-              echo ${{ github.repository_owner}}
-              echo ${{ github.event.client_payload.artefact_name }}
               echo "HASH=$(sha1sum /tmp/artifactjar/${{ github.event.client_payload.artifact_name }} | awk '{ print $1 }')" >> $GITHUB_ENV
 
              
@@ -53,14 +50,14 @@ jobs:
              #echo $HASH
              #echo $GITHUB_ENV
     # Seguridad valida archivos no esten corruptos o dañados
-      #- name: compare checksum
-      #  run: |
-      #    if [ "${{ env.HASH }}" == "${{ github.event.client_payload.checksum }}" ]; then 
-      #        echo "The checksum are equals! successfully operations"
-      #    else
-      #        echo "The cheksum are NOT equals! failure operation."
-      #        exit 1;
-      #    fi
+      - name: compare checksum
+        run: |
+          if [ "${{ env.HASH }}" == "${{ github.event.client_payload.checksum }}" ]; then 
+              echo "The checksum are equals! successfully operations"
+          else
+              echo "The cheksum are NOT equals! failure operation."
+              exit 1;
+          fi
 
 # Descarga source code de la rama default para poder devolver Dockerfile y cargar la imagen ak cibtexti 
 
@@ -81,7 +78,7 @@ jobs:
           name: dockerBuildContext
           path: |
             /tmp/Dockerfile
-            /tmp/${{ github.event.client_payload.artefact_name }}
+            /tmp/${{ github.event.client_payload.artifact_name }}
 
 ###################################################
 #Job 2 para administrar las tareas de docker
@@ -132,7 +129,7 @@ jobs:
         file : ./dockerBuildContext/Dockerfile #Ubicacion del dockerfile
         # parametros requeridos por el dockerfile
         build-args:  |
-          JAR_FILE=${{ github.event.client_payload.artefact_name }} 
+          JAR_FILE=${{ github.event.client_payload.artifact_name }} 
           DB_PASSWORD=${{ secrets.DB_PASSWORD }}
         push: true # Sube la imagen al registry, se encuentra en false por Default
         tags: ghcr.io/${{ github.repository_owner}}/product:${{ github.sha }} #nombre completo de la imagen, incluye el repositorio, usuario, nombre de la imagen y tag
