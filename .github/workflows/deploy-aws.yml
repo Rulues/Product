@@ -11,7 +11,7 @@ jobs:
       - name: Build and Push Container to ECR
         uses: GlueOps/github-actions-build-push-containers@v0.3.7
         with:
-          registry: "339712927179.dkr.ecr.us-east-1.amazonaws.com/product-app:latest"
+          registry: "339712927179.dkr.ecr.us-east-1.amazonaws.com/product-app"
           aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws_default_region: us-east-1
