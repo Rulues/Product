@@ -15,4 +15,4 @@ jobs:
           registry: "<aws-account-id>.dkr.ecr.<aws-region>.amazonaws.com"
           aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws_default_region: ${{ env.AWS_REGION}}
+          aws_default_region: us-east-1
