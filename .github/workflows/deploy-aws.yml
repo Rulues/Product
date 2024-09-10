@@ -1,0 +1,17 @@
+name: Build and Push Container to ECR using Access Keys
+
+on:
+  pull_request:
+    types: [opened,  reopened]
+
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build and Push Container to ECR
+        uses: GlueOps/github-actions-build-push-containers@v0.3.7
+        with:
+          registry: "<aws-account-id>.dkr.ecr.<aws-region>.amazonaws.com"
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_default_region: ${{ env.AWS_REGION}}
