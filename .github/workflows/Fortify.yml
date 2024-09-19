@@ -3,8 +3,7 @@ on:
   pull_request:
     branches: [ develop ]
     types: [ opened, reopened ] 
-  #repository_dispatch:
-  #  types: [fortify-scan-event] 
+
 jobs:
   build:
     name: Build and analyze Fortify
