@@ -1,15 +1,15 @@
-name: Fortify scan
+name: Build and analyze Fortify
 on:
   pull_request:
     types: [ opened, reopened ] 
 
 jobs:
   build:
-    name: Build and analyze Fortify
     runs-on: ubuntu-latest
     steps:    
       - name: Check out source code
-        uses: actions/checkout@v4  
+        uses: actions/checkout@v4 
+        
       - name: Run FoD SAST Scan
         uses: fortify/github-action@v1
         with:
