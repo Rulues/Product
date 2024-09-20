@@ -14,8 +14,8 @@ jobs:
 
       - name: Run FoD SAST Scan
         uses: fortify/github-action@v1
-        #with: 
-          #sast-scan: true
+        with: 
+          sast-scan: true
         env: 
           FOD_URL: https://ams.fortify.com
           FOD_TENANT: ${{ secrets.FOD_TENANT }}
