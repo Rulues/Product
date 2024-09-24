@@ -6,7 +6,7 @@ on:
 
 jobs: 
   build:
-    name: Build and analyze Fortify
+    name: Build and analyze Fortify by RB
     runs-on: ubuntu-latest
     steps:
       - name: Check out source code
