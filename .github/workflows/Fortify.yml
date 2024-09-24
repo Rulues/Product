@@ -22,6 +22,6 @@ jobs:
           FOD_TENANT: ${{ secrets.FOD_TENANT }}
           FOD_USER: ${{ secrets.FOD_USER }}
           FOD_PASSWORD: ${{ secrets.FOD_PAT }}
-          FOD_RELEASE: MyApp:1268427
+          FOD_RELEASE: 1268427
         
 
