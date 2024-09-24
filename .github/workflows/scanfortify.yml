@@ -1,4 +1,4 @@
-name: Fortify Scan
+name: Fortify ScanRB
 on:
   pull_request:
     branches: [ develop ]
@@ -22,5 +22,5 @@ jobs:
           FOD_TENANT: ${{ secrets.FOD_TENANT }}
           FOD_USER: ${{ secrets.FOD_USER }}
           FOD_PASSWORD: ${{ secrets.FOD_PAT }}
-          FOD_RELEASE: 1268427
+          
         
