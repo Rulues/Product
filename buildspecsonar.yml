@@ -5,6 +5,9 @@ phases:
     runtime-versions:
       java: corretto11
     commands:
+       "curl "https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip" -o "awscliv2.zip""
+       unzip awscliv2.zip
+       sudo ./aws/install
       - sudo apt-get install  awwscli 
       - sudo apt-get install boto3
       - yum -q install boto3
