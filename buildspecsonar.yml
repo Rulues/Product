@@ -18,21 +18,21 @@ phases:
       - echo "Running pre-build phase..."
       - echo "Setting up SonarQube environment variables..."
       - export SONAR_HOST_URL=https://sterling-werewolf-happy.ngrok-free.app/
-      - export SONAR_LOGIN=sqp_a122bfbf109e2276a3901cf7b23a6f706e762dda
+      - export SONAR_LOGIN=sqp_a47325b272369b9b5817f87707013bafcd716b21
   build:
     commands:
       - echo "Running SonarQube scan..."
       - sonar-scanner \
-        -Dsonar.projectKey=prod \
+        -Dsonar.projectKey=producto-service \
         -Dsonar.sources=. \
         -Dsonar.host.url=$SONAR_HOST_URL \
         -Dsonar.login=$SONAR_LOGIN
       - echo "Running SonarQube scan..."
       - mvn clean verify sonar:sonar \
-        -Dsonar.projectKey=prod \
-        -Dsonar.projectName='prod' \
+        -Dsonar.projectKey=producto-service \
+        -Dsonar.projectName=producto-service \
         -Dsonar.host.url=https://5b7a-200-68-170-62.ngrok-free.app \
-        -Dsonar.token=sqp_a122bfbf109e2276a3901cf7b23a6f706e762dda
+        -Dsonar.token=sqp_a47325b272369b9b5817f87707013bafcd716b21
   post_build:
     commands:
       - echo "Build completed. Check SonarQube dashboard for results."
