@@ -25,7 +25,7 @@ phases:
         -Dsonar.projectKey=producto-service \
         -Dsonar.projectName='producto-service' \
         -Dsonar.host.url=https://5b7a-200-68-170-62.ngrok-free.app \
-        -Dsonar.token=sqp_a47325b272369b9b5817f87707013bafcd716b21
+        -Dsonar.token=rubi
   post_build:
     commands:
       - echo "Build completed. Check SonarQube dashboard for results."
