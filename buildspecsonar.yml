@@ -10,6 +10,7 @@ phases:
       - yum -q install boto3
       - wget -qO /tmp/sonar-scanner.zip "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonarr-scanner-cli.-4.7.0.2747-linux.zip"
       - unzip .q /tmp/sonar-scanner.zip -d /tmp 
+      
   pre_build:
     commands:
       - echo Start code scan...
