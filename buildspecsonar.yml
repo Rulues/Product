@@ -6,23 +6,33 @@ phases:
       java: corretto11 # Usa la versión de Java que necesitas, aquí Java 11
     commands:
       - echo Installing SonarQube Scanner...
-      - curl -o /usr/local/bin/sonar-scanner https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.7.0.2747-linux.zip
-      - unzip -o /usr/local/bin/sonar-scanner/sonar-scanner-cli-4.7.0.2747-linux.zip
-      - export PATH=$PATH:/usr/local/bin/sonar-scanner-4.7.0.2747-linux/bin
+
+      - export SONAR_SCANNER_VERSION=6.0.0.4432
+      - export SONAR_SCANNER_HOME=$HOME/.sonar/sonar-scanner-$SONAR_SCANNER_VERSION-linux
+      - curl --create-dirs -sSLo $HOME/.sonar/sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$SONAR_SCANNER_VERSION-linux.zip
+      - unzip -o $HOME/.sonar/sonar-scanner.zip -d $HOME/.sonar/
+      - export PATH=$SONAR_SCANNER_HOME/bin:$PATH
+      - export SONAR_SCANNER_OPTS="-server"
   pre_build:
     commands:
       - echo "Running pre-build phase..."
       - echo "Setting up SonarQube environment variables..."
       - export SONAR_HOST_URL=https://sterling-werewolf-happy.ngrok-free.app/
-      - export SONAR_LOGIN= env.SONAR_QUBE-KEY
+      - export SONAR_LOGIN=sqp_a122bfbf109e2276a3901cf7b23a6f706e762dda
   build:
     commands:
       - echo "Running SonarQube scan..."
       - sonar-scanner \
-        -Dsonar.projectKey= env.SONAR_QUBE-PROJECT \
+        -Dsonar.projectKey= prod \
         -Dsonar.sources=. \
         -Dsonar.host.url=$SONAR_HOST_URL \
         -Dsonar.login=$SONAR_LOGIN
+      - echo "Running SonarQube scan..."
+      - mvn clean verify sonar:sonar \
+        -Dsonar.projectKey=prod \
+        -Dsonar.projectName='prod' \
+        -Dsonar.host.url=https://5b7a-200-68-170-62.ngrok-free.app \
+        -Dsonar.token=sqp_a122bfbf109e2276a3901cf7b23a6f706e762dda
   post_build:
     commands:
       - echo "Build completed. Check SonarQube dashboard for results."
