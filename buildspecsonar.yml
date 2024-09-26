@@ -5,8 +5,8 @@ phases:
     runtime-versions:
       java: corretto11
     commands:
-      - sudo apt get install  awwscli 
-      - sudo apt get install boto3
+      - sudo apt-get install  awwscli 
+      - sudo apt-get install boto3
       - yum -q install boto3
       - wget -qO /tmp/sonar-scanner.zip "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonarr-scanner-cli.-4.7.0.2747-linux.zip"
       - unzip .q /tmp/sonar-scanner.zip -d /tmp 
