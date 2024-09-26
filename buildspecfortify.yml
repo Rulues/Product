@@ -1,0 +1,30 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto11
+    commands:
+      - echo Installing Fortify on Demand CLI...
+      - curl -O https://tools.fortify.com/fortify-on-demand-cli.zip
+      - unzip fortify-on-demand-cli.zip -d /usr/local/bin/
+      - chmod +x /usr/local/bin/fodcli
+
+  pre_build:
+    commands:
+      - echo Logging in to Fortify on Demand...
+      - fodcli login --tenant montepiedad <your-tenant-id> --username <your-username> --password <your-password>
+      - 
+  build:
+    commands:
+      - echo Running Fortify on Demand scan...
+      - fodcli start-scan --release-id <your-release-id> --assessment-type <your-assessment-type> --entitlement-id <your-entitlement-id> --zip-location <path-to-your-source-code.zip>
+
+  post_build:
+    commands:
+      - echo Scan completed. Logging out...
+      - fodcli logout
+
+artifacts:
+  files:
+    - '**/*'
