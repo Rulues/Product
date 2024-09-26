@@ -18,8 +18,7 @@ phases:
       - echo "Running pre-build phase..."
     
   build:
-    commands:
-     
+    commands:     
       - echo "Running SonarQube scan..."
       - mvn clean verify sonar:sonar \
         -Dsonar.projectKey=producto-service \
