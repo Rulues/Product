@@ -7,7 +7,7 @@ phases:
     commands:
       # Instala el CLI de Fortify on Demand
       - echo "Instalando Fortify on Demand CLI..."
-      - curl -o fortify-cli.zip "https://downloads.fortify.com/fortifycli/latest/fortify-cli.zip"
+      - curl -o fortify-cli.zip " https://ams.fortify.com/Tools/SourceCodeAnalyzer/SCA_Linux_Latest_x64.run"
       - unzip fortify-cli.zip -d ~/fortify-cli
       - export PATH=~/fortify-cli:$PATH
 
