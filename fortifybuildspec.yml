@@ -7,7 +7,9 @@ phases:
     commands:
       # Instala el CLI de Fortify on Demand
       - echo "Instalando Fortify on Demand CLI..."
-      - curl -o fortify-cli.zip "https://tools.fortify.com/fortify-on-demand-cli.zip"
+      #- curl -o fortify-cli.zip "https://tools.fortify.com/fortify-on-demand-cli.zip"
+      - curl -o fortify-cli.zip "https://objects.githubusercontent.com/github-production-release-asset-2e65be/417134921/847d2de5-7954-4957-b5e1-5e0a753ad4ab?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=releaseassetproduction%2F20240927%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240927T191333Z&X-Amz-Expires=300&X-Amz-Signature=dad548189bd988e0be85937c3fed3c2529820bece7259f684b6e711d5382922a&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%3Dfcli-linux.tgz&response-content-type=application%2Foctet-stream" 
+      
       - unzip fortify-cli.zip -d /usr/local/bin/
       - chmod +x /usr/local/bin/fodcli
       - export PATH=/usr/local/bin/:$PATH
