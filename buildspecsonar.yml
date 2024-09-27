@@ -20,7 +20,7 @@ phases:
   build:
     commands:     
       - echo "Running SonarQube scan..."
-      - mvn clean verify sonar:sonar \ -Dsonar.projectKey=producto-service \ -Dsonar.projectName='producto-service' \ "-Dsonar.host.url=https://5b7a-200-68-170-62.ngrok-free.app" \ -Dsonar.token=rubi
+      - mvn clean verify sonar:sonar \ -Dsonar.projectKey=product-microservice \ -Dsonar.projectName='product-microservice' \ "-Dsonar.host.url=https://5b7a-200-68-170-62.ngrok-free.app" \ -Dsonar.token=rubi
   post_build:
     commands:
       - echo "Build completed. Check SonarQube dashboard for results."
