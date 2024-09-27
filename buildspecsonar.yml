@@ -7,12 +7,13 @@ phases:
     commands:
       - echo Installing SonarQube Scanner...
 
-      - export SONAR_SCANNER_VERSION=6.0.0.4432
+      - export SONAR_SCANNER_VERSION=4.0.0.4121
       - export SONAR_SCANNER_HOME=$HOME/.sonar/sonar-scanner-$SONAR_SCANNER_VERSION-linux
       - curl --create-dirs -sSLo $HOME/.sonar/sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$SONAR_SCANNER_VERSION-linux.zip
       - unzip -o $HOME/.sonar/sonar-scanner.zip -d $HOME/.sonar/
       - export PATH=$SONAR_SCANNER_HOME/bin:$PATH
       - export SONAR_SCANNER_OPTS="-server"
+    
   pre_build:
     commands:
       - echo Start code scan...
@@ -20,7 +21,7 @@ phases:
   build:
     commands:
       - echo Start code scan...
-      - mvn clean install  sonar:sonar -Dsonar.host.url=$SONAR_QUBE_URL -Dsonar.login=$SONAR_QUBE_KEY -Dsonar.projectKey=$SONAR_QUBE_PROJECT 
+      - mvn clean install  sonar:sonar -Dsonar.host.url=$SONAR_QUBE_URL -Dsonar.login=$SONAR_QUBE_KEY -Dsonar.projectKey=$SONAR_QUBE_PROJECT -Dsonar
   post_build:
     commands:
       - sleep 7
