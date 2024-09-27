@@ -13,7 +13,7 @@ phases:
   pre_build:
     commands:
       - echo Logging in to Fortify on Demand...
-      - fodcli login --tenant montepiedad <your-tenant-id> --username <your-username> --password <your-password>
+      - fodcli login --tenant montepiedad  --username "Julio Ulises Rodriguez Muñoz" --password "Prueb@s24987"
       - 
   build:
     commands:
