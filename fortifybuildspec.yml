@@ -8,8 +8,9 @@ phases:
       # Instala el CLI de Fortify on Demand
       - echo "Instalando Fortify on Demand CLI..."
       - curl -o fortify-cli.zip "https://tools.fortify.com/fortify-on-demand-cli.zip"
-      - unzip fortify-cli.zip -d ~/fortify-cli
-      - export PATH=~/fortify-cli:$PATH
+      - unzip fortify-cli.zip -d /usr/local/bin/
+      - chmod +x /usr/local/bin/fodcli
+      - export PATH=/usr/local/bin/:$PATH
 
   pre_build:
     commands:
@@ -17,7 +18,7 @@ phases:
       - echo Logging in to Fortify on Demand...
       - fodcli login --tenant montepiedad  --username Julio Ulises Rodriguez Muñoz --password Prueb@s24987
       - echo "Prepara la aplicación para el análisis..."
-      - zip -r ~/mi_codigo.zip /tmp/
+      - zip -r ~/mi_codigo.zip /usr/local/bin/
 
   build:
     commands:
