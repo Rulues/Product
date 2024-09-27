@@ -14,7 +14,6 @@ phases:
 
   pre_build:
     commands:
-
       - echo Logging in to Fortify on Demand...
       - fodcli login --tenant montepiedad  --username Julio Ulises Rodriguez Muñoz --password Prueb@s24987
       - echo "Prepara la aplicación para el análisis..."
