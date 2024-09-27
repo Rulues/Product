@@ -1,0 +1,34 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.x  # Especifica la versión de Python si es necesario
+    commands:
+      # Instala el CLI de Fortify on Demand
+      - echo "Instalando Fortify on Demand CLI..."
+      - curl -o fortify-cli.zip "https://downloads.fortify.com/fortifycli/latest/fortify-cli.zip"
+      - unzip fortify-cli.zip -d ~/fortify-cli
+      - export PATH=~/fortify-cli:$PATH
+
+  pre_build:
+    commands:
+
+      - echo Logging in to Fortify on Demand...
+      - fodcli login --tenant montepiedad  --username Julio Ulises Rodriguez Muñoz --password Prueb@s24987
+      - echo "Prepara la aplicación para el análisis..."
+      - zip -r ~/mi_codigo.zip /tmp/
+
+  build:
+    commands:
+      - echo "Subiendo el código a Fortify on Demand..."
+      - fortify upload --file ~/mi_codigo.zip --project "OXXO" --version "PocFortify"
+
+  post_build:
+    commands:
+      - echo "Ejecutando análisis en Fortify..."
+      - fortify scan --project "OXXO" --version "PocFortify"
+
+artifacts:
+  files:
+    - ~/mi_codigo.zip
