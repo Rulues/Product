@@ -20,7 +20,7 @@ phases:
   build:
     commands:
       - echo Start code scan...
-      - mvn clean install  sonar:sonar "-Dsonar.host.url=$SONAR_QUBE_URL -Dsonar.login=$SONAR_QUBE_KEY -Dsonar.projectKey=$SONAR_QUBE_PROJECT 
+      - mvn clean install  sonar:sonar -Dsonar.host.url=$SONAR_QUBE_URL -Dsonar.login=$SONAR_QUBE_KEY -Dsonar.projectKey=$SONAR_QUBE_PROJECT 
   post_build:
     commands:
       - sleep 7
